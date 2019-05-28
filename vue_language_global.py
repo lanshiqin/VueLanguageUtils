@@ -6,14 +6,24 @@ import re
 __author__ = '蓝士钦'
 
 
+# 获取指定文件后缀
+def get_file_extension(filename):
+    arr = os.path.splitext(filename)
+    return arr[len(arr) - 1]
+
+
 # 获取指定目录下指定后缀的文件全路径名，返回数组
 def get_file_path_list(path, find_suffix_array):
-    files = os.listdir(path)  # 得到文件夹下的所有文件名称
     s = []
-    for file in files:  # 遍历文件夹
-        for find_suffix in find_suffix_array:
-            if os.path.splitext(file)[1] == find_suffix:
-                s.append(path + "/" + file)
+    # 遍历路径下的所有文件夹
+    for dirpath, dirnames, filenames in os.walk(path):
+        # 遍历文件夹下的所有文件
+        for filepath in filenames:
+            # 匹配目标文件后缀
+            for find_suffix in find_suffix_array:
+                if get_file_extension(filepath) == find_suffix:
+                    s.append(os.path.join(dirpath, filepath))
+                    print(os.path.join(dirpath, filepath))
     return s
 
 
